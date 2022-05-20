@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -49,6 +50,27 @@ namespace SocketDemo
 
                 //cmd连接服务端命令：telnet 172.28.112.1 50000
                 ShowMsg(socketSend.RemoteEndPoint.ToString() + ":" + "连接成功");
+
+                Thread th = new Thread(Recive);
+                th.IsBackground=true;
+                th.Start(socketSend);
+            }
+        }
+
+        /// <summary>
+        /// 接收客户端发送过来的消息
+        /// </summary>
+        private void Recive(object o)
+        {
+            Socket socketSend=o as Socket;
+            while (true)
+            {
+                //客户端连接成功后，服务器应该接收客户端发来的消息
+                byte[] buffer = new byte[1024 * 1024 * 2];//用来保存接收的数据--接收的是字节类型
+                                                          //实际接收到的有效字节数
+                int r = socketSend.Receive(buffer);
+                string str = Encoding.UTF8.GetString(buffer, 0, r);//转化成能读懂的字符串类型
+                ShowMsg(socketSend.RemoteEndPoint + ":" + str);
             }
         }
 
