@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SocketDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="525" Width="430">
+        Title="MainWindow" 
+        Height="525" Width="430">
     <Viewbox Stretch="Fill">
         <Grid Height="510" Width="430">
             <TextBox x:Name="serverTextBox" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" TextWrapping="Wrap" Text="172.28.112.1" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center"/>
