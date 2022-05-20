@@ -52,7 +52,7 @@ namespace SocketDemo
                 ShowMsg(socketSend.RemoteEndPoint.ToString() + ":" + "连接成功");
 
                 Thread th = new Thread(Recive);
-                th.IsBackground=true;
+                th.IsBackground = true;
                 th.Start(socketSend);
             }
         }
@@ -62,13 +62,19 @@ namespace SocketDemo
         /// </summary>
         private void Recive(object o)
         {
-            Socket socketSend=o as Socket;
+            Socket socketSend = o as Socket;
             while (true)
             {
                 //客户端连接成功后，服务器应该接收客户端发来的消息
                 byte[] buffer = new byte[1024 * 1024 * 2];//用来保存接收的数据--接收的是字节类型
-                                                          //实际接收到的有效字节数
+                //实际接收到的有效字节数
                 int r = socketSend.Receive(buffer);
+
+                if (r==0)
+                {
+                    break;
+                }
+
                 string str = Encoding.UTF8.GetString(buffer, 0, r);//转化成能读懂的字符串类型
                 ShowMsg(socketSend.RemoteEndPoint + ":" + str);
             }
