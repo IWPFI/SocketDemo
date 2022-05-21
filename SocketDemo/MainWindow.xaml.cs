@@ -37,8 +37,8 @@ namespace SocketDemo
                 //当点击开始监听时 在服务器创建一个负责IP地址跟端口号的Socket
                 Socket socketWatch = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress ip = IPAddress.Any;//IPAddress.Parse(serverTextBox.Text);
-                                             //创建端口号对象
-                IPEndPoint point = new IPEndPoint(ip, Convert.ToInt32(portTextBox.Text));
+                                             
+                IPEndPoint point = new IPEndPoint(ip, Convert.ToInt32(portTextBox.Text));//创建端口号对象
                 //监听
                 socketWatch.Bind(point);
                 ShowMsg("监听成功");
@@ -68,7 +68,10 @@ namespace SocketDemo
                     //将远程连接的客户端的IP地址和Socket存入集合中
                     dicSocket.Add(socketSend.RemoteEndPoint.ToString(), socketSend);
                     //将远程连接的客户端的IP地址和端口号存入下拉框中
-                    UsersCombox.Items.Add(socketSend.RemoteEndPoint.ToString());
+                    UsersCombox.Dispatcher.Invoke(new Action(delegate
+                    {
+                        this.UsersCombox.Items.Add(socketSend.RemoteEndPoint.ToString());
+                    }));
 
                     //cmd连接服务端命令：telnet 172.28.112.1 50000
                     ShowMsg(socketSend.RemoteEndPoint.ToString() + ":" + "连接成功");
@@ -93,8 +96,8 @@ namespace SocketDemo
                 {
                     //客户端连接成功后，服务器应该接收客户端发来的消息
                     byte[] buffer = new byte[1024 * 1024 * 2];//用来保存接收的数据--接收的是字节类型
-                                                              //实际接收到的有效字节数
-                    int r = socketSend.Receive(buffer);
+                                                              
+                    int r = socketSend.Receive(buffer);//实际接收到的有效字节数
 
                     if (r == 0)
                     {
@@ -122,13 +125,21 @@ namespace SocketDemo
         /// <remarks>服务器给客户端发送消息</remarks>
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+
             string str = MsgTextBox.Text;
             byte[] buffet = System.Text.Encoding.UTF8.GetBytes(str);//转化为二进制数组发送
             //socketSend.Send(buffet);
 
             //获取用户在下拉框中选中的Ip地址
             string ip = UsersCombox.SelectedItem.ToString();
-            dicSocket[ip].Send(buffet);
+                dicSocket[ip].Send(buffet);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
