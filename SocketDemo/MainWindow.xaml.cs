@@ -19,6 +19,11 @@ namespace SocketDemo
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 负责通信的Socket
+        /// </summary>
+        Socket socketSend;
+
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -52,7 +57,7 @@ namespace SocketDemo
                 //等待客户端的连接 并且创建一个负责通信的Socket
                 while (true)
                 {
-                    Socket socketSend = socketWatch.Accept();
+                    socketSend = socketWatch.Accept();
 
                     //cmd连接服务端命令：telnet 172.28.112.1 50000
                     ShowMsg(socketSend.RemoteEndPoint.ToString() + ":" + "连接成功");
@@ -98,6 +103,17 @@ namespace SocketDemo
             {
                 this.LogTextBox.AppendText(str + "\r\n");
             }));
+        }
+
+        /// <summary>
+        /// 发送按钮
+        /// </summary>
+        /// <remarks>服务器给客户端发送消息</remarks>
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            string str = MsgTextBox.Text;
+            byte[] buffet = System.Text.Encoding.UTF8.GetBytes(str);//转化为二进制数组发送
+            socketSend.Send(buffet);
         }
     }
 }
