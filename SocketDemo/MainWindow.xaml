@@ -14,10 +14,10 @@
             <Button Content="监听" HorizontalAlignment="Left" Height="30" Margin="320,10,0,0" VerticalAlignment="Top" Width="85" Click="StartButton_Click"/>
             <TextBox x:Name="LogTextBox" HorizontalAlignment="Left" Height="163" Margin="10,102,0,0" VerticalAlignment="Top" Width="405" Background="#FFF3F3F3"/>
             <TextBox x:Name="MsgTextBox" HorizontalAlignment="Left" Height="70" Margin="10,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="405"/>
-            <TextBox HorizontalAlignment="Left" Height="30" Margin="70,385,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345"/>
+            <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Height="30" Margin="70,385,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345"/>
             <Label Content="文件：" HorizontalAlignment="Left" Height="30" Margin="10,388,0,0" VerticalAlignment="Top" Width="55"/>
-            <Button Content="选择文件" HorizontalAlignment="Left" Height="30" Margin="10,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF98FFC9"/>
-            <Button Content="发送文件" HorizontalAlignment="Left" Height="30" Margin="110,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF00D263"/>
+            <Button Content="选择文件" HorizontalAlignment="Left" Height="30" Margin="10,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF98FFC9" Click="SelectButton_Click"/>
+            <Button Content="发送文件" HorizontalAlignment="Left" Height="30" Margin="110,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF00D263" Click="SendFileButton_Click"/>
             <Button Content="发送消息" HorizontalAlignment="Left" Height="30" Margin="235,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF7EBBF3" Click="SendButton_Click"/>
             <Button Content="窗口震动" HorizontalAlignment="Left" Height="30" Margin="330,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF4884BB"/>
             <ComboBox x:Name="UsersCombox" HorizontalAlignment="Left" Margin="95,55,0,0" VerticalAlignment="Top" Width="200" Height="30"/>
