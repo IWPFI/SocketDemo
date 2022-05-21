@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -64,17 +66,41 @@ namespace Client
                 try
                 {
                     //客户端连接成功后，服务器应该接收客户端发来的消息
-                    byte[] buffer = new byte[1024 * 1024 * 3];//用来保存接收的数据--接收的是字节类型
+                    byte[] buffer = new byte[1024 * 1024 * 3];//用来保存接收的数据--接收的是字节类型 
+
                     //实际接收到的有效字节数
                     int r = socketSend.Receive(buffer);
-
                     if (r == 0)
                     {
                         break;
                     }
 
-                    string str = Encoding.UTF8.GetString(buffer, 0, r);//转化成能读懂的字符串类型
-                    ShowMsg(socketSend.RemoteEndPoint + ":" + str);
+                    //表示发送的是文字消息
+                    if (buffer[0] == 0)
+                    {
+                        string str = Encoding.UTF8.GetString(buffer, 1, r - 1);//转化成能读懂的字符串类型
+                        ShowMsg(socketSend.RemoteEndPoint + ":" + str);
+                    }
+                    else if (buffer[0] == 1)
+                    {
+                        SaveFileDialog sfd = new SaveFileDialog();
+                        sfd.InitialDirectory = @"E:\";
+                        sfd.Title = "请选择要保存的文件";
+                        sfd.Filter = "所有文件|*.*";
+                        sfd.ShowDialog();
+                        //sfd.ShowDialog(this);
+                        string path = sfd.FileName;
+                        using (FileStream fsWrite = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
+                        {
+                            fsWrite.Write(buffer, 1, r - 1);
+                        }
+                        MessageBox.Show("保存成功");
+                    }
+                    else if (buffer[0] == 2)
+                    {
+
+                    }
+
                 }
                 catch { }
             }
