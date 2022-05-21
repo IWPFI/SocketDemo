@@ -27,20 +27,36 @@ namespace Client
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 负责通信的Socket
+        /// </summary>
+        Socket socketSend;
+
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 //创建负责通信的Socket
-                Socket socketSend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                socketSend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress ip = IPAddress.Parse(serverTextBox.Text);//IPAddress.Any;
-                                                                   //创建端口号对象
+                //创建端口号对象
                 IPEndPoint point = new IPEndPoint(ip, Convert.ToInt32(portTextBox.Text));
                 //获取要连接的远程服务器应用程序的IP地址和端口号
                 socketSend.Connect(point);
                 ShowMsg("连接成功");
             }
             catch { }
+        }
+
+        /// <summary>
+        /// 发送按钮
+        /// </summary>
+        /// <remarks>客户端给服务器发送消息</remarks>
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            string str = MsgTextBox.Text.Trim();
+            byte[] buffet = System.Text.Encoding.UTF8.GetBytes(str);
+            socketSend.Send(buffet);
         }
 
         private void ShowMsg(string str)
