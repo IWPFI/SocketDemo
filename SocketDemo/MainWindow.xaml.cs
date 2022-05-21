@@ -187,5 +187,17 @@ namespace SocketDemo
                 dicSocket[UsersCombox.SelectedItem.ToString()].Send(newBuffer, 0, r + 1, SocketFlags.None);
             }
         }
+
+        /// <summary>
+        /// 震动按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VibrationButton_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] buffer=new byte[1];
+            buffer[0] = 2;
+            dicSocket[UsersCombox.SelectedItem.ToString()].Send(buffer);
+        }
     }
 }
