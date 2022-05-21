@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,8 +45,40 @@ namespace Client
                 //获取要连接的远程服务器应用程序的IP地址和端口号
                 socketSend.Connect(point);
                 ShowMsg("连接成功");
+
+                //有可能卡死在while(true)循环里面-->开启一个新的线程不停的接收服务端发来的消息
+                Thread th = new Thread(Recive);
+                th.IsBackground = true;
+                th.Start();
             }
             catch { }
+        }
+
+        /// <summary>
+        /// 接收客户端发送过来的消息
+        /// </summary>
+        private void Recive()
+        {
+            while (true)
+            {
+                try
+                {
+                    //客户端连接成功后，服务器应该接收客户端发来的消息
+                    byte[] buffer = new byte[1024 * 1024 * 3];//用来保存接收的数据--接收的是字节类型
+                    //实际接收到的有效字节数
+                    int r = socketSend.Receive(buffer);
+
+                    if (r == 0)
+                    {
+                        break;
+                    }
+
+                    string str = Encoding.UTF8.GetString(buffer, 0, r);//转化成能读懂的字符串类型
+                    ShowMsg(socketSend.RemoteEndPoint + ":" + str);
+                }
+                catch { }
+            }
+
         }
 
         /// <summary>
@@ -54,9 +87,13 @@ namespace Client
         /// <remarks>客户端给服务器发送消息</remarks>
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            string str = MsgTextBox.Text.Trim();
-            byte[] buffet = System.Text.Encoding.UTF8.GetBytes(str);
-            socketSend.Send(buffet);
+            try
+            {
+                string str = MsgTextBox.Text.Trim();
+                byte[] buffet = System.Text.Encoding.UTF8.GetBytes(str);
+                socketSend.Send(buffet);
+            }
+            catch { }
         }
 
         private void ShowMsg(string str)
