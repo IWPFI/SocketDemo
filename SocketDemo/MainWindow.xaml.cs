@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -23,6 +24,11 @@ namespace SocketDemo
         /// 负责通信的Socket
         /// </summary>
         Socket socketSend;
+
+        /// <summary>
+        /// 将远程连接的客户端的IP地址和Socket存入集合中
+        /// </summary>
+        Dictionary<string,Socket> dicSocket = new Dictionary<string,Socket>();
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
@@ -58,6 +64,11 @@ namespace SocketDemo
                 while (true)
                 {
                     socketSend = socketWatch.Accept();
+
+                    //将远程连接的客户端的IP地址和Socket存入集合中
+                    dicSocket.Add(socketSend.RemoteEndPoint.ToString(), socketSend);
+                    //将远程连接的客户端的IP地址和端口号存入下拉框中
+                    UsersCombox.Items.Add(socketSend.RemoteEndPoint.ToString());
 
                     //cmd连接服务端命令：telnet 172.28.112.1 50000
                     ShowMsg(socketSend.RemoteEndPoint.ToString() + ":" + "连接成功");
@@ -113,7 +124,11 @@ namespace SocketDemo
         {
             string str = MsgTextBox.Text;
             byte[] buffet = System.Text.Encoding.UTF8.GetBytes(str);//转化为二进制数组发送
-            socketSend.Send(buffet);
+            //socketSend.Send(buffet);
+
+            //获取用户在下拉框中选中的Ip地址
+            string ip = UsersCombox.SelectedItem.ToString();
+            dicSocket[ip].Send(buffet);
         }
     }
 }
