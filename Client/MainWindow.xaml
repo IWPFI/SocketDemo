@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
         mc:Ignorable="d"
-        Title="MainWindow" Height="394" Width="410">
+        Title="客户端" 
+        Height="394" Width="410"
+        x:Name="window">
     <Viewbox Stretch="Fill">
         <Grid Height="379" Width="410">
             <TextBox x:Name="serverTextBox" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="172.28.112.1" VerticalAlignment="Top" Width="200" Height="30" VerticalContentAlignment="Center"/>

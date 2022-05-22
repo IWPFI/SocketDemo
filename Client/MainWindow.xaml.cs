@@ -98,7 +98,7 @@ namespace Client
                     }
                     else if (buffer[0] == 2)
                     {
-
+                        Vibration();
                     }
 
                 }
@@ -120,6 +120,24 @@ namespace Client
                 socketSend.Send(buffet);
             }
             catch { }
+        }
+
+        /// <summary>
+        /// 震动
+        /// </summary>
+        private void Vibration()
+        {
+            for (int i = 0; i < 500; i++)
+            {
+                //this.window.WindowStartupLocation = new Point(200, 200);
+                //this.Location = new Point(280, 280);
+                this.window.Dispatcher.Invoke(new Action(delegate
+                {
+                    window.Top = 200;
+                    window.Top = 220;
+                }));
+
+            }
         }
 
         private void ShowMsg(string str)
