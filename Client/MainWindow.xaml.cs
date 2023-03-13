@@ -53,7 +53,7 @@ namespace Client
                 th.IsBackground = true;
                 th.Start();
             }
-            catch { }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Client
                     }
 
                 }
-                catch { }
+                catch (Exception ex) { ShowMsg(ex.Message); }
             }
 
         }
@@ -119,7 +119,7 @@ namespace Client
                 byte[] buffet = System.Text.Encoding.UTF8.GetBytes(str);
                 socketSend.Send(buffet);
             }
-            catch { }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         /// <summary>
@@ -127,25 +127,33 @@ namespace Client
         /// </summary>
         private void Vibration()
         {
-            for (int i = 0; i < 500; i++)
+            try
             {
-                //this.window.WindowStartupLocation = new Point(200, 200);
-                //this.Location = new Point(280, 280);
-                this.window.Dispatcher.Invoke(new Action(delegate
+                for (int i = 0; i < 500; i++)
                 {
-                    window.Top = 200;
-                    window.Top = 220;
-                }));
+                    //this.window.WindowStartupLocation = new Point(200, 200);
+                    //this.Location = new Point(280, 280);
+                    this.window.Dispatcher.Invoke(new Action(delegate
+                    {
+                        window.Top = 200;
+                        window.Top = 220;
+                    }));
 
+                }
             }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         private void ShowMsg(string str)
         {
-            this.LogTextBox.Dispatcher.Invoke(new Action(delegate
+            try
             {
-                this.LogTextBox.AppendText(str + "\r\n");
-            }));
+                this.LogTextBox.Dispatcher.Invoke(new Action(delegate
+                    {
+                        this.LogTextBox.AppendText(str + "\r\n");
+                    }));
+            }
+            catch { }
         }
     }
 }

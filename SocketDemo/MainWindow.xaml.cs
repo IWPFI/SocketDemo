@@ -41,7 +41,7 @@ namespace SocketDemo
                 IPAddress ip = IPAddress.Any;//IPAddress.Parse(serverTextBox.Text);
 
                 IPEndPoint point = new IPEndPoint(ip, Convert.ToInt32(portTextBox.Text));//创建端口号对象
-                
+
                 //监听
                 socketWatch.Bind(point);
                 ShowMsg("监听成功");
@@ -51,7 +51,7 @@ namespace SocketDemo
                 th.IsBackground = true;//设置后台运行
                 th.Start(socketWatch);
             }
-            catch { }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace SocketDemo
                     th.Start(socketSend);
                 }
             }
-            catch { }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         /// <summary>
@@ -108,15 +108,19 @@ namespace SocketDemo
                     ShowMsg(socketSend.RemoteEndPoint + ":" + str);
                 }
             }
-            catch { }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         private void ShowMsg(string str)
         {
-            this.LogTextBox.Dispatcher.Invoke(new Action(delegate
+            try
             {
-                this.LogTextBox.AppendText(str + "\r\n");
-            }));
+                this.LogTextBox.Dispatcher.Invoke(new Action(delegate
+                    {
+                        this.LogTextBox.AppendText(str + "\r\n");
+                    }));
+            }
+            catch { }
         }
 
         /// <summary>
@@ -143,10 +147,7 @@ namespace SocketDemo
                 string ip = UsersCombox.SelectedItem.ToString();
                 dicSocket[ip].Send(newBuffer);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         /// <summary>
@@ -156,13 +157,17 @@ namespace SocketDemo
         /// <param name="e"></param>
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.InitialDirectory = @"E:\桌面";
-            ofd.Title = "请选择要发送的问价";
-            ofd.Filter = "所有文件|*.*";
-            ofd.ShowDialog();
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.InitialDirectory = @"E:\桌面";
+                ofd.Title = "请选择要发送的问价";
+                ofd.Filter = "所有文件|*.*";
+                ofd.ShowDialog();
 
-            pathTextBox.Text = ofd.FileName;
+                pathTextBox.Text = ofd.FileName;
+            }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         /// <summary>
@@ -172,20 +177,24 @@ namespace SocketDemo
         /// <param name="e"></param>
         private void SendFileButton_Click(object sender, RoutedEventArgs e)
         {
-            //获取要发送文件的路径
-            string path = pathTextBox.Text;
-            using (FileStream fsRead = new FileStream(path, FileMode.Open, FileAccess.Read))
+            try
             {
-                byte[] buffer = new byte[1024 * 1024 * 5];
-                int r = fsRead.Read(buffer, 0, buffer.Length);
+                //获取要发送文件的路径
+                string path = pathTextBox.Text;
+                using (FileStream fsRead = new FileStream(path, FileMode.Open, FileAccess.Read))
+                {
+                    byte[] buffer = new byte[1024 * 1024 * 5];
+                    int r = fsRead.Read(buffer, 0, buffer.Length);
 
-                List<byte> list = new List<byte>();
-                list.Add(1);
-                list.AddRange(buffer);
-                byte[] newBuffer = list.ToArray();
+                    List<byte> list = new List<byte>();
+                    list.Add(1);
+                    list.AddRange(buffer);
+                    byte[] newBuffer = list.ToArray();
 
-                dicSocket[UsersCombox.SelectedItem.ToString()].Send(newBuffer, 0, r + 1, SocketFlags.None);
+                    dicSocket[UsersCombox.SelectedItem.ToString()].Send(newBuffer, 0, r + 1, SocketFlags.None);
+                }
             }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
 
         /// <summary>
@@ -195,9 +204,13 @@ namespace SocketDemo
         /// <param name="e"></param>
         private void VibrationButton_Click(object sender, RoutedEventArgs e)
         {
-            byte[] buffer=new byte[1];
-            buffer[0] = 2;
-            dicSocket[UsersCombox.SelectedItem.ToString()].Send(buffer);
+            try
+            {
+                byte[] buffer = new byte[1];
+                buffer[0] = 2;
+                dicSocket[UsersCombox.SelectedItem.ToString()].Send(buffer);
+            }
+            catch (Exception ex) { ShowMsg(ex.Message); }
         }
     }
 }
