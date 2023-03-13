@@ -5,23 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SocketDemo"
         mc:Ignorable="d"
-        Title="MainWindow" 
-        Height="525" Width="430">
-    <Viewbox Stretch="Fill">
-        <Grid Height="510" Width="430">
-            <TextBox x:Name="serverTextBox" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" TextWrapping="Wrap" Text="172.28.112.1" VerticalAlignment="Top" Width="200" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="portTextBox" HorizontalAlignment="Left" Height="30" Margin="215,10,0,0" TextWrapping="Wrap" Text="50000" VerticalAlignment="Top" Width="80" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <Button Content="监听" HorizontalAlignment="Left" Height="30" Margin="320,10,0,0" VerticalAlignment="Top" Width="85" Click="StartButton_Click"/>
-            <TextBox x:Name="LogTextBox" HorizontalAlignment="Left" Height="163" Margin="10,102,0,0" VerticalAlignment="Top" Width="405" Background="#FFF3F3F3"/>
-            <TextBox x:Name="MsgTextBox" HorizontalAlignment="Left" Height="70" Margin="10,295,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="405"/>
-            <TextBox x:Name="pathTextBox" HorizontalAlignment="Left" Height="30" Margin="70,385,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345"/>
-            <Label Content="文件：" HorizontalAlignment="Left" Height="30" Margin="10,388,0,0" VerticalAlignment="Top" Width="55"/>
-            <Button Content="选择文件" HorizontalAlignment="Left" Height="30" Margin="10,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF98FFC9" Click="SelectButton_Click"/>
-            <Button Content="发送文件" HorizontalAlignment="Left" Height="30" Margin="110,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF00D263" Click="SendFileButton_Click"/>
-            <Button Content="发送消息" HorizontalAlignment="Left" Height="30" Margin="235,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF7EBBF3" Click="SendButton_Click"/>
-            <Button Content="窗口震动" HorizontalAlignment="Left" Height="30" Margin="330,455,0,0" VerticalAlignment="Top" Width="85" Background="#FF4884BB" Click="VibrationButton_Click"/>
-            <ComboBox x:Name="UsersCombox" HorizontalAlignment="Left" Margin="95,55,0,0" VerticalAlignment="Top" Width="200" Height="30"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" Text="客户端列表：" VerticalAlignment="Top" Width="80"/>
-        </Grid>
-    </Viewbox>
+        Title="MainWindow"
+        WindowState="Normal"
+        Height="540" Width="500">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <TextBox x:Name="serverTextBox" Width="200" Margin="0,0,10,0" TextWrapping="Wrap" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="portTextBox" Width="100" Margin="0,0,10,0" TextWrapping="Wrap"
+                     VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="监听" Margin="0,0,0,0" Click="StartButton_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
+            <TextBlock Text="客户端列表：" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox x:Name="UsersCombox" Width="200"/>
+        </StackPanel>
+
+        <TextBox x:Name="MsgTextBox"  Grid.Row="2" Margin="10" Height="120" TextWrapping="Wrap"/>
+
+        <TextBox x:Name="LogTextBox" Grid.Row="3" Margin="10" Height="120" Background="#FFF3F3F3"/>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="10">
+            <Label Content="文件："/>
+            <TextBox x:Name="pathTextBox" Margin="10,0,0,0" Width="375" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="10">
+            <Button Content="选择文件" Margin="0,0,10,0" Background="#FF98FFC9" Click="SelectButton_Click"/>
+            <Button Content="发送文件" Margin="0,0,10,0" Background="#FF00D263" Click="SendFileButton_Click"/>
+            <Button Content="发送消息" Margin="0,0,10,0" Background="#FF7EBBF3" Click="SendButton_Click"/>
+            <Button Content="窗口震动" Margin="0,0,10,0" Background="#FF4884BB" Click="VibrationButton_Click"/>
+            <Button Content="清空文本" Margin="0,0,10,0" Background="#FF4884BB" Click="EmptyTextButton_Click"/>
+        </StackPanel>
+    </Grid>
 </Window>

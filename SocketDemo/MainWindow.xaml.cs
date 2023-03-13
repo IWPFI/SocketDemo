@@ -212,5 +212,10 @@ namespace SocketDemo
             }
             catch (Exception ex) { ShowMsg(ex.Message); }
         }
+
+        private void EmptyTextButton_Click(object sender, RoutedEventArgs e)
+        {
+            LogTextBox.Text = string.Empty;
+        }
     }
 }
