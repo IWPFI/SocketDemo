@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using HandyControl.Controls;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Window = System.Windows.Window;
 
 namespace SocketDemo
 {
@@ -71,7 +73,10 @@ namespace SocketDemo
                     //将远程连接的客户端的IP地址和Socket存入集合中
                     dicSocket.Add(socketSend.RemoteEndPoint.ToString(), socketSend);
                     //将远程连接的客户端的IP地址和端口号存入下拉框中
-                    UsersCombox.Items.Add(socketSend.RemoteEndPoint.ToString());
+                    this.UsersCombox.Dispatcher.Invoke(new Action(delegate
+                    {
+                        UsersCombox.Items.Add(socketSend.RemoteEndPoint.ToString());
+                    }));
 
                     //cmd连接服务端命令：telnet 172.28.112.1 50000
                     ShowMsg(socketSend.RemoteEndPoint.ToString() + ":" + "连接成功");
@@ -131,7 +136,6 @@ namespace SocketDemo
         {
             try
             {
-
                 string str = MsgTextBox.Text;
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(str);//转化为二进制数组发送
 
