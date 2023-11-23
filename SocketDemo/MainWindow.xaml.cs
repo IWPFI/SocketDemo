@@ -72,6 +72,10 @@ namespace SocketDemo
 
                     //将远程连接的客户端的IP地址和Socket存入集合中
                     dicSocket.Add(socketSend.RemoteEndPoint.ToString(), socketSend);
+
+                    // 在新的线程中检测客户端是否掉线
+                    Task newTask = Task.Run(() => CheckClientStatus(socketSend));
+
                     //将远程连接的客户端的IP地址和端口号存入下拉框中
                     this.UsersCombox.Dispatcher.Invoke(new Action(delegate
                     {
@@ -84,9 +88,39 @@ namespace SocketDemo
                     Thread th = new Thread(Recive);
                     th.IsBackground = true;
                     th.Start(socketSend);
+
                 }
             }
             catch (Exception ex) { ShowMsg(ex.Message); }
+        }
+
+        /// <summary>
+        /// 服务端检查客户端是否掉线
+        /// </summary>
+        /// <param name="clientSocket"></param>
+        private void CheckClientStatus(Socket clientSocket)
+        {
+            while (true)
+            {
+                // 检查客户端连接状态
+                bool isClientConnected = clientSocket.Poll(1000, SelectMode.SelectRead);
+
+                if (isClientConnected)
+                {
+                    Console.WriteLine("客户端已掉线");
+
+                    // 从字典中移除已断开连接的客户端
+                    dicSocket.Remove(clientSocket.RemoteEndPoint.ToString());
+
+                    //将远程连接的客户端的IP地址和端口号移除下拉框
+                    this.UsersCombox.Dispatcher.Invoke(new Action(delegate
+                    {
+                        UsersCombox.Items.Remove(socketSend.RemoteEndPoint.ToString());
+                    }));
+
+                    break;
+                }
+            }
         }
 
         /// <summary>
